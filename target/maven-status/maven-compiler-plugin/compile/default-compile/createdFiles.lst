@@ -1,0 +1,15 @@
+service\dao\NewSong.class
+service\dao\Connector.class
+MainApp.class
+service\filesService\PrinterXML.class
+service\filesService\ReaderCSV.class
+service\dao\Vote.class
+model\Song.class
+service\dao\Remover.class
+service\dao\Sorter.class
+service\filesService\PrinterCSV.class
+service\filesService\ReaderXML.class
+service\dao\ViewerList.class
+service\dao\MenuService.class
+model\ECategory.class
+service\MenuList.class
