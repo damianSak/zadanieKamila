@@ -1,16 +1,17 @@
 package service.filesService;
 
-import model.ECategory;
+import model.MusicCategory;
 import model.Song;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.*;
 import java.io.*;
 import java.util.ArrayList;
 
 public class ReaderXML {
 
-    public static ArrayList<Song> readXML(String stringPath) throws ParserConfigurationException, IOException, SAXException {
+    public static ArrayList<Song> readSongsFromXML(String stringPath) throws ParserConfigurationException, IOException, SAXException {
         ArrayList<Song> songs = new ArrayList<>();
         Song song;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -28,7 +29,7 @@ public class ReaderXML {
                     song.setTitle(element.getElementsByTagName("title").item(0).getTextContent());
                     song.setAuthor(element.getElementsByTagName("author").item(0).getTextContent());
                     song.setAlbum(element.getElementsByTagName("album").item(0).getTextContent());
-                    song.setCategory(ECategory.valueOf(element.getElementsByTagName("category").item(0).getTextContent().toUpperCase()));
+                    song.setCategory(MusicCategory.valueOf(element.getElementsByTagName("category").item(0).getTextContent().toUpperCase()));
                     song.setVotes(Integer.parseInt(element.getElementsByTagName("votes").item(0).getTextContent()));
                 } catch (IllegalArgumentException exception) {
                     System.out.println("Zły format piosenki " + song.getTitle());

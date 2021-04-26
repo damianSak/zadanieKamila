@@ -2,65 +2,63 @@ package service.dao;
 
 import model.Song;
 import org.xml.sax.SAXException;
+import utils.StringHandler;
+
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import static service.dao.Connector.connectList;
-import static service.filesService.PrinterCSV.printAllToCsv;
-import static service.filesService.PrinterXML.printToXML;
-import static service.filesService.ReaderCSV.readSongsCSV;
-import static service.dao.Sorter.*;
-import static service.dao.ViewerList.showSongsList;
-import static service.filesService.ReaderXML.readXML;
+
+import static service.dao.ListConnector.connectList;
+import static service.filesService.PrinterCSV.printAllSongsToCsv;
+import static service.filesService.PrinterXML.printSongsToXML;
+import static service.filesService.ReaderCSV.readSongsFromCSV;
+import static service.dao.SongsSorter.*;
+import static service.dao.ListViewer.showSongsListOnConsole;
+import static service.filesService.ReaderXML.readSongsFromXML;
 
 public class MenuService {
 
-    private static Scanner scanner = new Scanner(System.in);
     private static String option = "";
 
-    public static void getOption1(ArrayList<Song> songs) throws IOException, ParserConfigurationException, SAXException {
+    public static void readSongsListFromFile(ArrayList<Song> songs) throws IOException, ParserConfigurationException, SAXException {
         String answer;
         String formatFile;
         ArrayList<Song> nextList = new ArrayList<>();
         do {
-            System.out.println("Proszę podać ścieżkę do pliku");
-            System.out.print(">: ");
-            formatFile = scanner.nextLine();
+            formatFile = StringHandler.printMessageWithChooseOption("Proszę podać ścieżkę do pliku");
             if (formatFile.contains(".csv")) {
-                nextList = readSongsCSV(formatFile);
+                nextList = readSongsFromCSV(formatFile);
                 System.out.println();
             } else if (formatFile.contains(".xml")) {
-                nextList = readXML(formatFile);
+                nextList = readSongsFromXML(formatFile);
             } else {
                 System.out.println("Nie rozpoznano!!");
             }
             if (!nextList.isEmpty()) {
                 connectList(songs, nextList);
             }
-            System.out.println("Chcesz wczytać kolejną listę? Y/N");
-            System.out.print(">: ");
-            answer = scanner.nextLine().toUpperCase();
+            answer = StringHandler.printMessageWithChooseOption("Chcesz wczytać kolejną listę? Y/N")
+                    .toUpperCase();
         } while (answer.contains("Y"));
     }
 
-    public static void getOption7(ArrayList<Song> songs) {
+    public static void generateSongsListByVotes(ArrayList<Song> songs) {
         final int songsSize = songs.size();
         System.out.println("Wygeneruj raport z rankingu:");
         System.out.println("1 - Dla wszystkich piosenek");
         System.out.println("2 - Top 3");
         System.out.println("3 - Top 10");
         System.out.print(">: ");
-        option = scanner.nextLine();
+        option = StringHandler.readStringFromUser();
         System.out.println();
         switch (option) {
             case "1":
-                getQestion(sortByVotes(songs));
+                printSongsOnConsole(sortSongsByVotes(songs));
                 break;
             case "2":
                 final int top3 = 3;
                 if (songsSize >= top3) {
-                    getQestion(getTop3(songs));
+                    printSongsOnConsole(getTop3Songs(songs));
                 } else {
                     System.out.println("Lista jest za krótka.");
                 }
@@ -68,7 +66,7 @@ public class MenuService {
             case "3":
                 final int top10 = 10;
                 if (songsSize >= top10) {
-                    getQestion(getTop10(songs));
+                    printSongsOnConsole(getTop10Songs(songs));
                 } else {
                     System.out.println("Lista jest za krótka.");
                 }
@@ -77,39 +75,34 @@ public class MenuService {
         }
     }
 
-    public static void getOption8(ArrayList<Song> songs) {
-        getQestion(sortByCategory(songs));
+    public static void generateSongsListByCategory(ArrayList<Song> songs) {
+        printSongsOnConsole(sortSongsByCategory(songs));
     }
 
-    private static void getQestion(ArrayList<Song> songs) {
-        System.out.println("Czy wyświetlić raport? Y/N");
-        System.out.print(">: ");
-        option = scanner.nextLine().toUpperCase();
+    private static void printSongsOnConsole(ArrayList<Song> songs) {
+        option = StringHandler.printMessageWithChooseOption("Czy wyświetlić raport? Y/N")
+                .toUpperCase();
         if (option.equals("Y")) {
-            showSongsList(songs);
-            getPrintQuestion(songs);
+            showSongsListOnConsole(songs);
+            saveListToFile(songs);
         } else {
-            getPrintQuestion(songs);
+            saveListToFile(songs);
         }
     }
 
-    private static void getPrintQuestion(ArrayList<Song> songs) {
-        System.out.println("Czy zapisać raport do pliku? Y/N");
-        System.out.print(">: ");
-        option = scanner.nextLine().toUpperCase();
+    private static void saveListToFile(ArrayList<Song> songs) {
+        option = StringHandler.printMessageWithChooseOption("Czy zapisać raport do pliku? Y/N")
+                .toUpperCase();
         if (option.equals("Y")) {
-            System.out.println("Wprowadź ścieżkę pliku oraz nazwę pliku.");
-            System.out.print(">: ");
-            option = scanner.nextLine();
+            option = StringHandler.printMessageWithChooseOption("Wprowadź ścieżkę pliku oraz nazwę pliku.");
             if (option.contains(".csv")) {
-                printAllToCsv(songs, option);
+                printAllSongsToCsv(songs, option);
             } else if (option.contains(".xml")) {
-                printToXML(songs, option);
+                printSongsToXML(songs, option);
             } else {
                 System.out.println("Prosze podać plik w formacie .csv lub .xml");
-                getPrintQuestion(songs);
+                saveListToFile(songs);
             }
         }
     }
-
 }

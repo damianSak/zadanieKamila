@@ -7,20 +7,20 @@ public class Song {
     private String title;
     private String author;
     private String album;
-    private ECategory category;
+    private MusicCategory category;
     private Integer votes;
 
     public Song() {
     }
 
-    public Song(String title, String author, String album, ECategory category) {
+    public Song(String title, String author, String album, MusicCategory category) {
         this.title = title;
         this.author = author;
         this.album = album;
         this.category = category;
     }
 
-    public Song(String title, String author, String album, ECategory category, int votes) {
+    public Song(String title, String author, String album, MusicCategory category, int votes) {
 
         this.title = title;
         this.author = author;
@@ -53,11 +53,11 @@ public class Song {
         this.album = album;
     }
 
-    public ECategory getCategory() {
+    public MusicCategory getCategory() {
         return category;
     }
 
-    public void setCategory(ECategory category) {
+    public void setCategory(MusicCategory category) {
         this.category = category;
     }
 

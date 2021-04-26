@@ -1,18 +1,16 @@
 package service.dao;
 
 import model.Song;
-import java.util.ArrayList;
-import java.util.Scanner;
+import utils.StringHandler;
 
-public class Vote {
-    private static Scanner scanner = new Scanner(System.in);
+import java.util.ArrayList;
+
+public class SongVoter {
 
     public static ArrayList<Song> giveVoteToSong(ArrayList<Song> songs) {
-        ViewerList.showSongsList(songs);
+        ListViewer.showSongsListOnConsole(songs);
         System.out.println();
-        System.out.println("Podaj numer pisenki z listy.");
-        System.out.print(">: ");
-        String votes = scanner.nextLine();
+        String votes = StringHandler.printMessageWithChooseOption("Podaj numer pisenki z listy.");
         if (votes.length() > 0) {
             int id = Integer.parseInt(votes) - 1;
             songs.get(id)

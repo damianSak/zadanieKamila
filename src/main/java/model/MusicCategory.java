@@ -1,6 +1,6 @@
 package model;
 
-public enum ECategory {
+public enum MusicCategory {
     ALTERNATIVE, METAL, ROCK, POP, RNB
 
 

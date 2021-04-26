@@ -3,6 +3,7 @@ package service.filesService;
 import model.Song;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 
 
 public class PrinterXML {
-    public static void printToXML(ArrayList<Song> songList, String stringPath) {
+    public static void printSongsToXML(ArrayList<Song> songList, String stringPath) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

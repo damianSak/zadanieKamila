@@ -1,10 +1,11 @@
 package service.dao;
 
 import model.Song;
+
 import java.util.ArrayList;
 
-public class Connector {
-    public static ArrayList<Song> connectList ( ArrayList<Song> mainList, ArrayList<Song> bonusList) {
+public class ListConnector {
+    public static ArrayList<Song> connectList(ArrayList<Song> mainList, ArrayList<Song> bonusList) {
         ArrayList<Song> temp = new ArrayList<>();
         ArrayList<Song> temp2 = new ArrayList<>();
         for (Song song : mainList) {
@@ -27,10 +28,8 @@ public class Connector {
             }
             i++;
         }
-        i = 0;
         System.out.println();
         System.out.println("Udało się dodać piosenki z listy. \n");
         return mainList;
     }
-
 }
